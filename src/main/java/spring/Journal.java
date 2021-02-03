@@ -1,18 +1,19 @@
 package spring;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import spring.aspect.TimeLog;
+import spring.dao.StudentDao;
 
 import java.io.*;
+import java.util.List;
 import java.util.Map;
 
 @Repository
 public class Journal {
-    private String nameFile;
+    private StudentDao studentDao;
 
-    public void setNameFile(String nameFile) {
-        this.nameFile = nameFile;
+    public Journal( StudentDao studentDao) {
+        this.studentDao = studentDao;
     }
 
     @TimeLog
@@ -28,9 +29,12 @@ public class Journal {
         }
     }
 
+    @TimeLog
+    public void saveMarkDatabase(List<StudentMark> studentMark)  {
+        studentDao.addStudents(studentMark);
+    }
+
     public Integer getMark(String fio) {
-        try {Thread.sleep(1500);}
-        catch (Exception e){ e.printStackTrace();}
-        return 4;
+        return studentDao.getMarkByFioStudent(fio);
     }
 }

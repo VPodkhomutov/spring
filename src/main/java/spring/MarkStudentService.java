@@ -5,20 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import spring.aspect.TimeLog;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-
-import static java.lang.System.exit;
+import java.util.*;
 
 @Component
 public class MarkStudentService implements IMarkStudent {
     private ValidateMark validateMark;
     private Journal j;
     private static final Logger LOGGER = LoggerFactory.getLogger(MarkStudentService.class);
-
 
     @Autowired
     public MarkStudentService(ValidateMark validateMark, Journal j) {
@@ -29,7 +22,8 @@ public class MarkStudentService implements IMarkStudent {
     @TimeLog
     @Override
     public void fillAndSaveMarkStudent(List<String> listStudent){
-        Map<String,Integer> studentsMarkMap = new HashMap<String, Integer>();
+        //Map<String,Integer> studentsMarkMap = new HashMap<String, Integer>();
+        List<StudentMark> studentMarks = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
         String mark;
         for (String fio: listStudent) {
@@ -40,9 +34,11 @@ public class MarkStudentService implements IMarkStudent {
                 System.out.println("Введите новую оценку студента "+fio);
                 mark = sc.nextLine();
             }
-            studentsMarkMap.put(fio,Integer.parseInt(mark));
+            //studentsMarkMap.put(fio,Integer.parseInt(mark));
+            studentMarks.add(new StudentMark(fio, Integer.parseInt(mark)));
         }
-        saveMap(studentsMarkMap);
+        //saveMap(studentsMarkMap);
+        saveToDatabase(studentMarks);
         System.out.println("Оценки сохранены! ");
         String fio;
         Integer returnMark;
@@ -52,13 +48,22 @@ public class MarkStudentService implements IMarkStudent {
             if ("exit".equalsIgnoreCase(fio)) {
                 break;
             }
-            System.out.println("Оценка студента "+fio+" равна: "+getMark(fio));
+            returnMark=getMark(fio);
+            if (returnMark.equals(0)) {
+                System.out.println("Оценок у студента " + fio + " нет");
+            }
+             else{
+            System.out.println("Оценка студента " + fio + " равна: " + returnMark);
+            }
         }
-
     }
 
-    public void saveMap(Map<String,Integer> mapMark) {
-        j.saveMark(mapMark);
+    public void saveMap(Map<String,Integer> studentsMarkMap) {
+        j.saveMark(studentsMarkMap);
+    }
+
+    public void saveToDatabase(List<StudentMark> studentMarks) {
+        j.saveMarkDatabase(studentMarks);
     }
 
     public Integer getMark(String fio) {
