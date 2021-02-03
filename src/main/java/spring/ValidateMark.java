@@ -1,13 +1,14 @@
 package spring;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import spring.aspect.TimeLog;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+@Service
 public class ValidateMark {
-
     public boolean validate(String mark){
         int i;
         try {

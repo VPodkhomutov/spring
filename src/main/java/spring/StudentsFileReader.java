@@ -2,6 +2,7 @@ package spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import spring.aspect.TimeLog;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,12 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class Students {
+public class StudentsFileReader {
     private String name;
-    private MarkStudent markStudent;
+    private IMarkStudent markStudent;
 
     @Autowired
-    public Students(MarkStudent markStudent) {
+    public StudentsFileReader(IMarkStudent markStudent) {
         this.markStudent = markStudent;
     }
 
@@ -22,7 +23,8 @@ public class Students {
         this.name = name;
     }
 
-    public List<String> getStudents() throws IOException {
+    @TimeLog
+    public void getStudents() throws IOException {
         List<String> studentsArrayList = new ArrayList<String>();
         FileReader fileReader = new FileReader(new File(name));
         BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -30,10 +32,10 @@ public class Students {
         while((line = bufferedReader.readLine())!=null) {
             studentsArrayList.add(line);
         }
-        return studentsArrayList;
+        getMark(studentsArrayList);
     }
 
-    public Map<String,Integer> getMark(List<String> students) {
-        return markStudent.fillMarkStudent(students);
+    public void getMark(List<String> students) {
+         markStudent.fillAndSaveMarkStudent(students);
     }
 }
