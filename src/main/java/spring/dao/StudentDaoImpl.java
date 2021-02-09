@@ -15,12 +15,10 @@ import java.util.List;
 
 @Repository
 public class StudentDaoImpl implements StudentDao {
-    private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate parameterJdbcTemplate;
 
     @Autowired
     public StudentDaoImpl(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.parameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 

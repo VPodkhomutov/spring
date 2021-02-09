@@ -22,7 +22,6 @@ public class MarkStudentService implements IMarkStudent {
     @TimeLog
     @Override
     public void fillAndSaveMarkStudent(List<String> listStudent){
-        //Map<String,Integer> studentsMarkMap = new HashMap<String, Integer>();
         List<StudentMark> studentMarks = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
         String mark;
@@ -30,37 +29,32 @@ public class MarkStudentService implements IMarkStudent {
             System.out.println("Введите оценку студента "+fio);
             mark = sc.nextLine();
             while (!validateMark.validate(mark)) {
-                System.out.println("Введенная оценка не является числом от 1 до 5");
-                System.out.println("Введите новую оценку студента "+fio);
+                LOGGER.info("Введенная оценка не является числом от 1 до 5");
+                LOGGER.info("Введите новую оценку студента "+fio);
                 mark = sc.nextLine();
             }
-            //studentsMarkMap.put(fio,Integer.parseInt(mark));
             studentMarks.add(new StudentMark(fio, Integer.parseInt(mark)));
         }
-        //saveMap(studentsMarkMap);
         saveToDatabase(studentMarks);
-        System.out.println("Оценки сохранены! ");
+        LOGGER.info("Оценки сохранены! ");
         String fio;
         Integer returnMark;
         while (true) {
-        System.out.println("Можно получить оценку студента. Введите Фамилию или exit для выхода из программы");
+            LOGGER.info("Можно получить оценку студента. Введите Фамилию или exit для выхода из программы");
             fio = sc.nextLine();
             if ("exit".equalsIgnoreCase(fio)) {
                 break;
             }
             returnMark=getMark(fio);
             if (returnMark.equals(0)) {
-                System.out.println("Оценок у студента " + fio + " нет");
+                LOGGER.info("Оценок у студента " + fio + " нет");
             }
              else{
-            System.out.println("Оценка студента " + fio + " равна: " + returnMark);
+                LOGGER.info("Оценка студента " + fio + " равна: " + returnMark);
             }
         }
     }
 
-    public void saveMap(Map<String,Integer> studentsMarkMap) {
-        j.saveMark(studentsMarkMap);
-    }
 
     public void saveToDatabase(List<StudentMark> studentMarks) {
         j.saveMarkDatabase(studentMarks);
