@@ -26,7 +26,7 @@ public class MarkStudentService implements IMarkStudent {
         Scanner sc = new Scanner(System.in);
         String mark;
         for (String fio: listStudent) {
-            System.out.println("Введите оценку студента "+fio);
+            LOGGER.info("Введите оценку студента "+fio);
             mark = sc.nextLine();
             while (!validateMark.validate(mark)) {
                 LOGGER.info("Введенная оценка не является числом от 1 до 5");
@@ -47,10 +47,10 @@ public class MarkStudentService implements IMarkStudent {
             }
             returnMark=getMark(fio);
             if (returnMark.equals(0)) {
-                LOGGER.info("Оценок у студента " + fio + " нет");
+                LOGGER.info("Оценок у студента {} нет", fio);
             }
              else{
-                LOGGER.info("Оценка студента " + fio + " равна: " + returnMark);
+                LOGGER.info("Оценка студента {} равна: {}" ,fio, returnMark);
             }
         }
     }

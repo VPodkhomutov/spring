@@ -2,7 +2,6 @@ package spring.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
@@ -26,7 +25,7 @@ public class StudentDaoImpl implements StudentDao {
     public Integer getMarkByFioStudent(String fio) {
         int tmpMark;
         try {
-            tmpMark = parameterJdbcTemplate.queryForObject("select mark from students where fio = :fio", Collections.singletonMap("fio", fio), Integer.class);
+            tmpMark = parameterJdbcTemplate.queryForObject("select mark from students where fio = :fio limit 1", Collections.singletonMap("fio", fio), Integer.class);
         } catch (DataAccessException e) {
             tmpMark=0;
         }

@@ -35,7 +35,7 @@ public class LogAspect {
         Object[] args = joinPoint.getArgs();
         fio = (String) args[0];
         if (hashMark.containsKey(fio)) {
-            LOGGER.info("оценка "+fio+" взята из кэша");
+            LOGGER.info("оценка {} взята из кэша", fio);
             mark = hashMark.get(fio);
         } else {
             mark = (Integer) joinPoint.proceed();
