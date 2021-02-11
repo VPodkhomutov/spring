@@ -1,11 +1,6 @@
 package spring;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import spring.aspect.TimeLog;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class ValidateMark {

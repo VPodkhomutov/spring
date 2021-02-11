@@ -10,14 +10,10 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
-        //ApplicationContext context = new AnnotationConfigApplicationContext("spring");
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-
         String file = "D:\\student.txt";
         StudentsFileReader students = context.getBean(StudentsFileReader.class);
-
         students.setName(file);
-
         try{
            students.getStudents();
            } catch (IOException e) {
